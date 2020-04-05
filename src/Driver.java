@@ -16,7 +16,7 @@ public class Driver {
 
         File file = new File(fname);
 
-        int chunk = 1000; //8Gb or 4gb
+        int chunk = 2; //8Gb or 4gb
         long start = System.currentTimeMillis();
         int noOfFiles = divideFileToChunks(file, chunk);
 
@@ -48,13 +48,12 @@ public class Driver {
 
     }
 
-    public static int divideFileToChunks(File file, long chunk) {
+    public static int divideFileToChunks(File file, int chunk) {
         int numberOfFiles = 0;
 
         long fileSize = file.length();
 
         Scanner sc = null;
-
         try {
             sc = new Scanner(file);
 
@@ -62,7 +61,7 @@ public class Driver {
 
             while (sc.hasNextLine()) {
 
-                int counter = (int) (fileSize / chunk);
+                int counter = (int) (fileSize / (chunk*100));
 
                 File f = new File(String.valueOf(numberOfFiles));
                 FileWriter fw = new FileWriter(f);
@@ -80,6 +79,7 @@ public class Driver {
             }
 
             sc.close();
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

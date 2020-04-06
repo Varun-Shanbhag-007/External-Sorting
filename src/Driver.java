@@ -7,6 +7,8 @@ import java.util.*;
 
 public class Driver {
 
+    static ArrayList<BufferedReader> filePointers ;
+
     public static void main(String[] args) {
 
         //Data File name
@@ -16,10 +18,11 @@ public class Driver {
 
         File file = new File(fname);
 
-        int chunk = 10; //8Gb or 4gb
+        long chunk = 10; //8Gb or 4gb
         long start = System.currentTimeMillis();
         int noOfFiles = divideFileToChunks(file, chunk);
 
+        filePointers = new ArrayList<>(noOfFiles);
         System.out.println("Number of Temp Files Created : " + noOfFiles);
 
         //Sort Temp Files
@@ -49,7 +52,7 @@ public class Driver {
 
     }
 
-    public static int divideFileToChunks(File file, int chunk) {
+    public static int divideFileToChunks(File file, long chunk) {
         int numberOfFiles = 0;
 
         long fileSize = file.length();
@@ -157,23 +160,30 @@ public class Driver {
         }
     }
 
-    public static String getLineFromFile(File f , int line){
+    public static String getLineFromFile(int f ,int line){
+        String val = "" ;
+        File file = new File(String.valueOf(f));
+        int totalLines = (int)Math.ceil((float)file.length()/100);
 
-        int totalLines = (int)Math.ceil((float)f.length()/100);
-        String text = "";
-
-        if(line > totalLines)
-            return text;
         try {
-            RandomAccessFile access = new RandomAccessFile(f, "r");
-            access.seek(line*100);
-            text = access.readLine().trim();
-            access.close();
+            if (line == 0) {
+                FileReader readfile = new FileReader(file);
+                BufferedReader readbuffer = new BufferedReader(readfile);
+                val = readbuffer.readLine();
+                filePointers.add(readbuffer);
 
+            }
+            else {
+                val = filePointers.get(f).readLine();
+                if(totalLines == line+1){
+                    filePointers.get(f).close();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return text;
+        return val;
+
     }
 
     public static void mergeKSortedArrays(int noOfFiles, long size) {
@@ -196,7 +206,7 @@ public class Driver {
 
         //add first elements in the array to this heap
         for (int i = 0; i < noOfFiles; i++) {
-            minHeap.add(new Driver.HeapNode(i, 0, getLineFromFile(new File(String.valueOf(i)),0)));
+            minHeap.add(new Driver.HeapNode(i, 0, getLineFromFile(i, 0)));
         }
 
         //Complexity O(n * k * log k)
@@ -209,7 +219,7 @@ public class Driver {
                 writer.write(System.lineSeparator());
                 if (node.index + 1 < (int)Math.ceil((float)new File(String.valueOf(node.fileNum)).length()/100) ) {
                     //Complexity of O(log k)
-                    String val = getLineFromFile(new File(String.valueOf(node.fileNum)), node.index + 1);
+                    String val = getLineFromFile(node.fileNum,node.index + 1);
                     if(!val.equalsIgnoreCase(""))
                         minHeap.add(new Driver.HeapNode(node.fileNum,
                             node.index + 1,

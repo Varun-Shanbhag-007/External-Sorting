@@ -126,16 +126,14 @@ public class Driver {
             quickSort(lines,0,lines.size()-1);
 
             try {
-                PrintWriter pw = new PrintWriter(file); //this  line truncate the file
 
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file,false));
                 for (String x : lines) {
                     writer.write(x);
                     writer.write("\n");
                 }
 
                 writer.close();
-                pw.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

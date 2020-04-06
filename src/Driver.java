@@ -168,7 +168,8 @@ public class Driver {
 
             if (node != null) {
                 writer.write(node.value);
-                writer.write(System.lineSeparator());
+		//gensorts add \r\n to every line so adding same to merged sorted file to keep size same 
+		writer.write("\r\n");
                 if (node.index + 1 < chunk_file_size ) {
                     //Complexity of O(log k)
                     String val = getLineFromFile(node.fileNum,node.index + 1);

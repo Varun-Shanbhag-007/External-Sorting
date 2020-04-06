@@ -23,7 +23,8 @@ public class Driver {
         System.out.println("Number of Temp Files Created : " + noOfFiles);
 
         //Sort Temp Files
-        sortTempFiles(noOfFiles);
+        //sortTempFiles(noOfFiles);
+        sortTempFilesMT(noOfFiles);
 
         long finish = System.currentTimeMillis();
 
@@ -135,6 +136,22 @@ public class Driver {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            noOfFiles--;
+        }
+    }
+
+    public static void sortTempFilesMT(int noOfFiles) {
+
+        noOfFiles = noOfFiles-1;
+
+        while (noOfFiles >= 0) {
+
+            File file = new File(String.valueOf(noOfFiles));
+
+            SortHelper r = new SortHelper(file);
+            Thread t = new Thread(r);
+            t.run();
 
             noOfFiles--;
         }

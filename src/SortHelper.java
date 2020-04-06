@@ -1,11 +1,11 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class SortHelper implements Runnable {
 
 
     File file ;
+
     public SortHelper(File file) {
         this.file = file;
     }
@@ -13,20 +13,24 @@ public class SortHelper implements Runnable {
 
     @Override
     public void run() {
-        Scanner sc = null;
+        BufferedReader br = null;
 
         ArrayList<String> lines = new ArrayList<>();
 
         try {
-            sc = new Scanner(file);
+            br   = new BufferedReader(new FileReader(file));
 
-            while (sc.hasNextLine()) {
-                lines.add(sc.nextLine());
+            String contentLine = br.readLine();
+            while (contentLine != null) {
+                lines.add(contentLine);
+                contentLine = br.readLine();
             }
 
-            sc.close();
+            br.close();
 
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

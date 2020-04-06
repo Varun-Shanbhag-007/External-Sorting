@@ -59,14 +59,14 @@ public class Driver {
     public static void divideFileToChunks(File file, long chunk) {
         int numberOfFiles = 0;
 
-
-        Scanner sc = null;
+        BufferedReader br = null;
         try {
-            sc = new Scanner(file);
+            br   = new BufferedReader(new FileReader(file));
 
             long size = file.length();
 
-            while (sc.hasNextLine()) {
+            String contentLine = br.readLine();
+            while (contentLine != null) {
 
                 long counter =  chunk_file_size;
 
@@ -74,9 +74,9 @@ public class Driver {
                 FileWriter fw = new FileWriter(f);
                 BufferedWriter writer = new BufferedWriter(fw);
                 while (counter != 0) {
-                    writer.write(sc.nextLine());
-                    writer.write(" ");
+                    writer.write(contentLine);
                     writer.write(System.lineSeparator());
+                    contentLine = br.readLine();
                     counter--;
 
                 }
@@ -86,7 +86,7 @@ public class Driver {
                 numberOfFiles++;
             }
 
-            sc.close();
+            br.close();
 
 
         } catch (FileNotFoundException e) {
@@ -98,51 +98,6 @@ public class Driver {
 
     }
 
-    public static void sortTempFiles(int noOfFiles) {
-
-        noOfFiles = noOfFiles-1;
-
-        while (noOfFiles >= 0) {
-
-            File file = new File(String.valueOf(noOfFiles));
-
-            Scanner sc = null;
-
-            ArrayList<String> lines = new ArrayList<>();
-
-            try {
-                sc = new Scanner(file);
-
-                while (sc.hasNextLine()) {
-                    lines.add(sc.nextLine());
-                }
-
-                sc.close();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            //sort lines of a given file
-            //Collections.sort(lines); //inbuilt sort function
-            quickSort(lines,0,lines.size()-1);
-
-            try {
-
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file,false));
-                for (String x : lines) {
-                    writer.write(x);
-                    writer.write("\n");
-                }
-
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            noOfFiles--;
-        }
-    }
 
     public static void sortTempFilesMT(int noOfFiles) {
 

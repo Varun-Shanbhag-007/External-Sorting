@@ -8,6 +8,7 @@ import java.util.*;
 public class Driver {
 
     static BufferedReader[] filePointers ;
+    static long chunk_file_size;
 
     public static void main(String[] args) {
 
@@ -19,6 +20,9 @@ public class Driver {
         File file = new File(fname);
 
         int chunk = 10; //8Gb or 4gb
+
+        chunk_file_size = file.length()/(chunk*100);
+
         long start = System.currentTimeMillis();
         divideFileToChunks(file, chunk);
 
@@ -55,7 +59,6 @@ public class Driver {
     public static void divideFileToChunks(File file, long chunk) {
         int numberOfFiles = 0;
 
-        long fileSize = file.length();
 
         Scanner sc = null;
         try {
@@ -65,7 +68,7 @@ public class Driver {
 
             while (sc.hasNextLine()) {
 
-                int counter = (int) (fileSize / (chunk*100));
+                long counter =  chunk_file_size;
 
                 File f = new File(String.valueOf(numberOfFiles));
                 FileWriter fw = new FileWriter(f);
@@ -157,10 +160,10 @@ public class Driver {
         }
     }
 
-    public static String getLineFromFile(int f ,int line){
+    public static String getLineFromFile(int f ,long line){
         String val = "" ;
         File file = new File(String.valueOf(f));
-        int totalLines = (int)Math.ceil((float)file.length()/100);
+        long totalLines = chunk_file_size;
 
         try {
             if (line == 0) {
@@ -179,6 +182,7 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return val;
 
     }
@@ -210,11 +214,10 @@ public class Driver {
             if (node != null) {
                 writer.write(node.value);
                 writer.write(System.lineSeparator());
-                if (node.index + 1 < (int)Math.ceil((float)new File(String.valueOf(node.fileNum)).length()/100) ) {
+                if (node.index + 1 < chunk_file_size ) {
                     //Complexity of O(log k)
                     String val = getLineFromFile(node.fileNum,node.index + 1);
-                    if(!val.equalsIgnoreCase(""))
-                        minHeap.add(new Driver.HeapNode(node.fileNum,
+                    minHeap.add(new Driver.HeapNode(node.fileNum,
                             node.index + 1,
                             val));
                 }
@@ -245,10 +248,10 @@ public class Driver {
 
     private static class HeapNode {
         public int fileNum;
-        public int index;
+        public long index;
         public String value;
 
-        public HeapNode(int fileNum, int index, String value) {
+        public HeapNode(int fileNum, long index, String value) {
             this.fileNum = fileNum;
             this.index = index;
             this.value = value;

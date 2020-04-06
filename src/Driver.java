@@ -42,7 +42,7 @@ public class Driver {
 
         System.out.println("Temp Files merged in :"+timeElapsed);
 
-        //deleteTempFiles(noOfFiles);
+        deleteTempFiles(noOfFiles);
 
 
 
@@ -150,6 +150,7 @@ public class Driver {
             RandomAccessFile access = new RandomAccessFile(f, "r");
             access.seek(line*100);
             text = access.readLine().trim();
+            access.close();
 
         } catch (IOException e) {
             e.printStackTrace();

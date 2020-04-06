@@ -34,16 +34,15 @@ public class SortHelper implements Runnable {
         quickSort(lines,0,lines.size()-1);
 
         try {
-            PrintWriter pw = new PrintWriter(file); //this  line truncate the file
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            for (String x : lines) {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file,false));
+            for (int i = 0; i < lines.size(); i++) {
+                String x = lines.get(i);
                 writer.write(x);
                 writer.write("\n");
             }
 
             writer.close();
-            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

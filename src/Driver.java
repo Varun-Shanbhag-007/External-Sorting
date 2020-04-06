@@ -179,7 +179,7 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return val;
+        return val.trim();
 
     }
 
@@ -191,10 +191,6 @@ public class Driver {
         try {
             fw =new FileWriter(f);
             writer =  new BufferedWriter(fw);
-
-
-
-
 
         PriorityQueue<Driver.HeapNode> minHeap =
                 new PriorityQueue<>(noOfFiles,

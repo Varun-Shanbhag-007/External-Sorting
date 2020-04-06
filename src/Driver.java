@@ -179,7 +179,7 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return val.trim();
+        return val;
 
     }
 

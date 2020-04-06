@@ -16,7 +16,7 @@ public class Driver {
 
         File file = new File(fname);
 
-        int chunk = 2; //8Gb or 4gb
+        int chunk = 10; //8Gb or 4gb
         long start = System.currentTimeMillis();
         int noOfFiles = divideFileToChunks(file, chunk);
 
@@ -42,7 +42,7 @@ public class Driver {
 
         System.out.println("Temp Files merged in :"+timeElapsed);
 
-        deleteTempFiles(noOfFiles);
+        //deleteTempFiles(noOfFiles);
 
 
 
@@ -68,7 +68,8 @@ public class Driver {
                 BufferedWriter writer = new BufferedWriter(fw);
                 while (counter != 0) {
                     writer.write(sc.nextLine());
-                    writer.write("\n");
+                    writer.write(" ");
+                    writer.write(System.lineSeparator());
                     counter--;
 
                 }
@@ -146,18 +147,10 @@ public class Driver {
         if(line > totalLines)
             return text;
         try {
-            FileReader readfile = new FileReader(f);
-            BufferedReader readbuffer = new BufferedReader(readfile);
-            for (int i = 1; i <= totalLines; i++) {
-                if (i == line) {
-                    text = readbuffer.readLine();
-                    break;
-                } else
-                    readbuffer.readLine();
-            }
+            RandomAccessFile access = new RandomAccessFile(f, "r");
+            access.seek(line*100);
+            text = access.readLine().trim();
 
-            readfile.close();
-            readbuffer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -184,7 +177,7 @@ public class Driver {
 
         //add first elements in the array to this heap
         for (int i = 0; i < noOfFiles; i++) {
-            minHeap.add(new Driver.HeapNode(i, 1, getLineFromFile(new File(String.valueOf(i)),1)));
+            minHeap.add(new Driver.HeapNode(i, 0, getLineFromFile(new File(String.valueOf(i)),0)));
         }
 
         //Complexity O(n * k * log k)
@@ -194,8 +187,8 @@ public class Driver {
 
             if (node != null) {
                 writer.write(node.value);
-                writer.write("\n");
-                if (node.index + 1 <= (int)Math.ceil((float)new File(String.valueOf(node.fileNum)).length()/100)) {
+                writer.write(System.lineSeparator());
+                if (node.index + 1 < (int)Math.ceil((float)new File(String.valueOf(node.fileNum)).length()/100) ) {
                     //Complexity of O(log k)
                     String val = getLineFromFile(new File(String.valueOf(node.fileNum)), node.index + 1);
                     if(!val.equalsIgnoreCase(""))

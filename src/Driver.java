@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Driver {
 
-    static ArrayList<BufferedReader> filePointers ;
+    static BufferedReader[] filePointers ;
 
     public static void main(String[] args) {
 
@@ -18,16 +18,16 @@ public class Driver {
 
         File file = new File(fname);
 
-        long chunk = 10; //8Gb or 4gb
+        int chunk = 10; //8Gb or 4gb
         long start = System.currentTimeMillis();
-        int noOfFiles = divideFileToChunks(file, chunk);
+        divideFileToChunks(file, chunk);
 
-        filePointers = new ArrayList<>(noOfFiles);
-        System.out.println("Number of Temp Files Created : " + noOfFiles);
+        filePointers = new BufferedReader[chunk];
+        System.out.println("Number of Temp Files Created : " + chunk);
 
         //Sort Temp Files
         //sortTempFiles(noOfFiles);
-        sortTempFilesMT(noOfFiles);
+        sortTempFilesMT(chunk);
 
         long finish = System.currentTimeMillis();
 
@@ -38,7 +38,7 @@ public class Driver {
         start = System.currentTimeMillis();
 
         //Merge the sorted files
-        mergeKSortedArrays(noOfFiles,file.length()/100);
+        mergeKSortedArrays(chunk,file.length()/100);
 
         finish = System.currentTimeMillis();
 
@@ -46,13 +46,13 @@ public class Driver {
 
         System.out.println("Temp Files merged in :"+timeElapsed);
 
-        deleteTempFiles(noOfFiles);
+        deleteTempFiles(chunk);
 
 
 
     }
 
-    public static int divideFileToChunks(File file, long chunk) {
+    public static void divideFileToChunks(File file, long chunk) {
         int numberOfFiles = 0;
 
         long fileSize = file.length();
@@ -92,7 +92,6 @@ public class Driver {
             e.printStackTrace();
         }
 
-        return numberOfFiles;
 
     }
 
@@ -168,13 +167,13 @@ public class Driver {
                 FileReader readfile = new FileReader(file);
                 BufferedReader readbuffer = new BufferedReader(readfile);
                 val = readbuffer.readLine();
-                filePointers.add(readbuffer);
+                filePointers[f] = readbuffer;
 
             }
             else {
-                val = filePointers.get(f).readLine();
+                val = filePointers[f].readLine();
                 if(totalLines == line+1){
-                    filePointers.get(f).close();
+                    filePointers[f].close();
                 }
             }
         } catch (IOException e) {

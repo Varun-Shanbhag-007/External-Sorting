@@ -60,6 +60,7 @@ public class Driver {
 
         //Sort Temp Files
         int workLoadPerThread = chunk/8;
+
         sortTempFilesMT(chunk,workLoadPerThread);
 
         finish = System.currentTimeMillis();
@@ -71,7 +72,7 @@ public class Driver {
         start = System.currentTimeMillis();
 
         //Merge the sorted files
-        mergeKSortedArrays(chunk,file.length()/100);
+        mergeKSortedArrays(chunk,file.length()/100 , file.getName());
 
         finish = System.currentTimeMillis();
 
@@ -205,9 +206,9 @@ public class Driver {
 
     }
 
-    public static void mergeKSortedArrays(int noOfFiles, long size) {
+    public static void mergeKSortedArrays(int noOfFiles, long size, String fname) {
 
-        File f = new File("Sorted");
+        File f = new File("Sorted"+fname);
         FileWriter fw ;
         BufferedWriter writer ;
         try {

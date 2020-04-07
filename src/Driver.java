@@ -169,13 +169,24 @@ public class Driver {
 
     public static void sortTempFilesMT(int noOfFiles, int workLoadPerThread) {
 
+        ArrayList<Thread> threadPool = new ArrayList<>();
         int counter = 0;
+
         for(int i = 0 ;i < 8 ; i++){
             SortHelper r = new SortHelper(counter,workLoadPerThread);
             Thread t = new Thread(r);
             t.start();
+            threadPool.add(t);
             counter += 2;
 
+        }
+
+        for(Thread thread :threadPool){
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -22,7 +22,7 @@ public class Driver {
 
         if(file.length() > maxRam){
             long start = System.currentTimeMillis();
-            int chunk = (int) (file.length()/1000000000L);
+            int chunk = (int) (file.length()/500000000L);
             externalSort(file,chunk);
             long end = System.currentTimeMillis();
             System.out.println("Sorted " + fName + " in :" + (end-start));

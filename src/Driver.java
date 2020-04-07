@@ -190,6 +190,8 @@ public class Driver {
                     e.printStackTrace();
                 }
             }
+
+            loops --;
         }
     }
 

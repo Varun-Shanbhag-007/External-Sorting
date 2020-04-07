@@ -21,13 +21,18 @@ public class Driver {
         long maxRam = 8000000000L;
 
         if(file.length() > maxRam){
+            long start = System.currentTimeMillis();
             externalSort(file,chunk);
+            long end = System.currentTimeMillis();
+            System.out.println("Sorted " + fName + " in :" + (end-start));
+            System.out.println("*** Units are in Millis");
         }
         else{
             long start = System.currentTimeMillis();
-            inMeorySort(fName);
+            inMemorySort(fName);
             long end = System.currentTimeMillis();
             System.out.println("Sorted " + fName + " in :" + (end-start));
+            System.out.println("*** Units are in Millis");
         }
 
     }
@@ -37,18 +42,25 @@ public class Driver {
         chunk_file_size = file.length()/(chunk*100);
 
         long start = System.currentTimeMillis();
+
         divideFileToChunks(file, chunk);
 
         filePointers = new BufferedReader[chunk];
-        System.out.println("Number of Temp Files Created : " + chunk);
-
-        //Sort Temp Files
-        //sortTempFiles(noOfFiles);
-        sortTempFilesMT(chunk);
 
         long finish = System.currentTimeMillis();
 
         long timeElapsed = finish - start;
+
+        System.out.println( chunk + " Temp Files Created in: " + timeElapsed);
+
+        start = System.currentTimeMillis();
+
+        //Sort Temp Files
+        sortTempFilesMT(chunk);
+
+        finish = System.currentTimeMillis();
+
+        timeElapsed = finish - start;
 
         System.out.println("Temp Files are sorted in :"+timeElapsed);
 
@@ -61,13 +73,13 @@ public class Driver {
 
         timeElapsed = finish - start;
 
-        System.out.println("Temp Files merged in :"+timeElapsed);
+        System.out.println("Temp Files merged in: "+timeElapsed);
 
         deleteTempFiles(chunk);
 
     }
 
-    public static void inMeorySort(String fName) {
+    public static void inMemorySort(String fName) {
         File file = new File(fName);
         BufferedReader br = null;
 

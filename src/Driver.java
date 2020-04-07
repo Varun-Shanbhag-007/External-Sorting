@@ -171,7 +171,7 @@ public class Driver {
         int loops = totalFiles/8;
         int counter = 0;
 
-        while(loops < 0) {
+        while(loops > 0) {
             ArrayList<Thread> threadPool = new ArrayList<>();
 
             for (int i = 0; i < 8; i++) {

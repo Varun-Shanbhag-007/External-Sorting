@@ -4,40 +4,21 @@ import java.util.ArrayList;
 public class SortHelper implements Runnable {
 
     int fName;
+    ArrayList<String> lines;
 
 
-    public SortHelper(int start) {
-            this.fName = start;
+    public SortHelper(int fName, ArrayList<String> lines) {
+            this.fName = fName;
+            this.lines=lines;
     }
 
 
     @Override
     public void run() {
 
-            BufferedReader br = null;
-
-            ArrayList<String> lines = new ArrayList<>();
-
             File file = new File(String.valueOf(fName));
 
-            try {
-                br = new BufferedReader(new FileReader(file));
-
-                String contentLine = br.readLine();
-                while (contentLine != null) {
-                    lines.add(contentLine);
-                    contentLine = br.readLine();
-                }
-
-                br.close();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //sort lines of a given file
+            //sort lines of a given file chunk
             quickSort(lines, 0, lines.size() - 1);
 
             try {

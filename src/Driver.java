@@ -13,13 +13,26 @@ public class Driver {
     public static void main(String[] args) {
 
         //Data File name
-        String fname = args[0];
+        String fName = args[0];
 
-        System.out.println(fname);
-
-        File file = new File(fname);
+        File file = new File(fName);
 
         int chunk = 10; //8Gb or 4gb
+        long maxRam = 8000000000L;
+
+        if(file.length() > maxRam){
+            externalSort(file,chunk);
+        }
+        else{
+            long start = System.currentTimeMillis();
+            inMeorySort(fName);
+            long end = System.currentTimeMillis();
+            System.out.println("Sorted " + fName + " in :" + (end-start));
+        }
+
+    }
+
+    public static void externalSort(File file,int chunk){
 
         chunk_file_size = file.length()/(chunk*100);
 
@@ -52,8 +65,47 @@ public class Driver {
 
         deleteTempFiles(chunk);
 
+    }
 
+    public static void inMeorySort(String fName) {
+        File file = new File(fName);
+        BufferedReader br = null;
 
+        ArrayList<String> lines = new ArrayList<>();
+
+        try {
+            br = new BufferedReader(new FileReader(file));
+
+            String contentLine = br.readLine();
+            while (contentLine != null) {
+                lines.add(contentLine);
+                contentLine = br.readLine();
+            }
+
+            br.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //sort lines of a given file
+        quickSort(lines, 0, lines.size() - 1);
+
+        try {
+            File sortedFile = new File(fName+"Sorted");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(sortedFile, false));
+            for (int i = 0; i < lines.size(); i++) {
+                String x = lines.get(i);
+                writer.write(x);
+                writer.write("\r\n");
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void divideFileToChunks(File file, long chunk) {
@@ -97,7 +149,6 @@ public class Driver {
 
 
     }
-
 
     public static void sortTempFilesMT(int noOfFiles) {
 
@@ -168,8 +219,8 @@ public class Driver {
 
             if (node != null) {
                 writer.write(node.value);
-		//gensorts add \r\n to every line so adding same to merged sorted file to keep size same 
-		writer.write("\r\n");
+                //gensorts add \r\n to every line so adding same to merged sorted file to keep size same
+                writer.write("\r\n");
                 if (node.index + 1 < chunk_file_size ) {
                     //Complexity of O(log k)
                     String val = getLineFromFile(node.fileNum,node.index + 1);

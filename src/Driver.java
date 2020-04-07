@@ -22,7 +22,7 @@ public class Driver {
 
         if(file.length() > maxRam){
             long start = System.currentTimeMillis();
-            int chunk = (int) file.length()/1000000000;
+            int chunk = (int) (file.length()/1000000000L);
             externalSort(file,chunk);
             long end = System.currentTimeMillis();
             System.out.println("Sorted " + fName + " in :" + (end-start));
@@ -39,6 +39,8 @@ public class Driver {
     }
 
     public static void externalSort(File file,int chunk){
+
+        System.out.println(chunk+" Temp Files are being Generated");
 
         chunk_file_size = file.length()/(chunk*100);
 

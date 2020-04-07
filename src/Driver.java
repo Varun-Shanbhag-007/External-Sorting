@@ -46,7 +46,7 @@ public class Driver {
 
         long start = System.currentTimeMillis();
 
-        divideFileToChunks(file);
+        //divideFileToChunks(file);
 
         filePointers = new BufferedReader[chunk];
 
@@ -60,7 +60,7 @@ public class Driver {
 
         //Sort Temp Files
 
-        sortTempFilesMT(chunk);
+        sortTempFilesMT(file,chunk);
 
         finish = System.currentTimeMillis();
 
@@ -166,32 +166,58 @@ public class Driver {
 
     }
 
-    public static void sortTempFilesMT(int totalFiles) {
+    public static void sortTempFilesMT(File file , int totalFiles) {
 
+
+        BufferedReader br = null;
         int loops = totalFiles/8;
         int counter = 0;
+        try {
+                br   = new BufferedReader(new FileReader(file));
+                String contentLine = br.readLine();
 
-        while(loops > 0) {
-            ArrayList<Thread> threadPool = new ArrayList<>();
+                while (loops > 0 && contentLine != null) {
 
-            for (int i = 0; i < 8; i++) {
-                SortHelper r = new SortHelper(counter);
-                Thread t = new Thread(r);
-                t.start();
-                threadPool.add(t);
-                counter++;
+                    ArrayList<Thread> threadPool = new ArrayList<>();
 
-            }
 
-            for (Thread thread : threadPool) {
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    for (int i = 0; i < 8; i++) {
+
+                        long size =  chunk_file_size;
+
+                        ArrayList<String> lines = new ArrayList<>();
+
+                        while (size != 0) {
+                            lines.add(contentLine);
+                            contentLine = br.readLine();
+                            size--;
+
+                        }
+                        SortHelper r = new SortHelper(counter,lines);
+                        Thread t = new Thread(r);
+                        t.start();
+                        threadPool.add(t);
+                        counter++;
+
+                    }
+
+                    for (Thread thread : threadPool) {
+                        try {
+                            thread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    loops--;
                 }
-            }
 
-            loops --;
+            br.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -3,25 +3,22 @@ import java.util.ArrayList;
 
 public class SortHelper implements Runnable {
 
-    int start;
-    int workload ;
+    int fName;
 
 
-    public SortHelper(int start, int workload) {
-        this.workload = workload;
-        this.start = start;
+    public SortHelper(int start) {
+        this.fName = start;
     }
 
 
     @Override
     public void run() {
 
-        while(workload > 0){
             BufferedReader br = null;
 
             ArrayList<String> lines = new ArrayList<>();
 
-            File file = new File(String.valueOf(start));
+            File file = new File(String.valueOf(fName));
 
             try {
                 br = new BufferedReader(new FileReader(file));
@@ -57,10 +54,8 @@ public class SortHelper implements Runnable {
                 e.printStackTrace();
             }
 
-            workload --;
-            start ++;
-    }
-
+        Runtime r = Runtime.getRuntime();
+        r.gc();
 
     }
 

@@ -59,9 +59,8 @@ public class Driver {
         start = System.currentTimeMillis();
 
         //Sort Temp Files
-        int workLoadPerThread = chunk/8;
 
-        sortTempFilesMT(chunk,workLoadPerThread);
+        sortTempFilesMT(chunk);
 
         finish = System.currentTimeMillis();
 
@@ -167,25 +166,29 @@ public class Driver {
 
     }
 
-    public static void sortTempFilesMT(int noOfFiles, int workLoadPerThread) {
+    public static void sortTempFilesMT(int totalFiles) {
 
-        ArrayList<Thread> threadPool = new ArrayList<>();
+        int loops = totalFiles/8;
         int counter = 0;
 
-        for(int i = 0 ;i < 8 ; i++){
-            SortHelper r = new SortHelper(counter,workLoadPerThread);
-            Thread t = new Thread(r);
-            t.start();
-            threadPool.add(t);
-            counter += 2;
+        while(loops < 0) {
+            ArrayList<Thread> threadPool = new ArrayList<>();
 
-        }
+            for (int i = 0; i < 8; i++) {
+                SortHelper r = new SortHelper(counter);
+                Thread t = new Thread(r);
+                t.start();
+                threadPool.add(t);
+                counter++;
 
-        for(Thread thread :threadPool){
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            }
+
+            for (Thread thread : threadPool) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

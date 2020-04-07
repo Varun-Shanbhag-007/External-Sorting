@@ -21,12 +21,18 @@ public class Driver {
         long maxRam = 8000000000L;
 
         if(file.length() > maxRam){
+
             long start = System.currentTimeMillis();
+
+            //each chunk of 500MB == 500000000L
             int chunk = (int) (file.length()/500000000L);
+
             externalSort(file,chunk);
+
             long end = System.currentTimeMillis();
             System.out.println("Sorted " + fName + " in :" + (end-start));
             System.out.println("*** Units are in Millis");
+
         }
         else{
             long start = System.currentTimeMillis();
@@ -40,33 +46,20 @@ public class Driver {
 
     public static void externalSort(File file,int chunk){
 
-        System.out.println(chunk+" Temp Files are being Generated");
+        //array for temp file pointers
+        filePointers = new BufferedReader[chunk];
 
         chunk_file_size = file.length()/(chunk*100);
 
         long start = System.currentTimeMillis();
 
-        //divideFileToChunks(file);
-
-        filePointers = new BufferedReader[chunk];
+        sortTempFilesMT(file,chunk);
 
         long finish = System.currentTimeMillis();
 
         long timeElapsed = finish - start;
 
-        System.out.println( chunk + " Temp Files Created in: " + timeElapsed);
-
-        start = System.currentTimeMillis();
-
-        //Sort Temp Files
-
-        sortTempFilesMT(file,chunk);
-
-        finish = System.currentTimeMillis();
-
-        timeElapsed = finish - start;
-
-        System.out.println("Temp Files are sorted in :"+timeElapsed);
+        System.out.println("Temp Files are created & sorted in :"+timeElapsed);
 
         start = System.currentTimeMillis();
 
@@ -79,6 +72,7 @@ public class Driver {
 
         System.out.println("Temp Files merged in: "+timeElapsed);
 
+        //Delete Temp Files
         deleteTempFiles(chunk);
 
     }
@@ -122,48 +116,6 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void divideFileToChunks(File file) {
-        int numberOfFiles = 0;
-
-        BufferedReader br = null;
-        try {
-            br   = new BufferedReader(new FileReader(file));
-
-            long size = file.length();
-
-            String contentLine = br.readLine();
-            while (contentLine != null) {
-
-                long counter =  chunk_file_size;
-
-                File f = new File(String.valueOf(numberOfFiles));
-                FileWriter fw = new FileWriter(f);
-                BufferedWriter writer = new BufferedWriter(fw);
-                while (counter != 0) {
-                    writer.write(contentLine);
-                    writer.write(System.lineSeparator());
-                    contentLine = br.readLine();
-                    counter--;
-
-                }
-
-                writer.close();
-                fw.close();
-                numberOfFiles++;
-            }
-
-            br.close();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     public static void sortTempFilesMT(File file , int totalFiles) {

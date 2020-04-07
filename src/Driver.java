@@ -173,7 +173,7 @@ public class Driver {
         for(int i = 0 ;i < 8 ; i++){
             SortHelper r = new SortHelper(counter,workLoadPerThread);
             Thread t = new Thread(r);
-            t.run();
+            t.start();
             counter += 2;
 
         }

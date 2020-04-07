@@ -3,53 +3,63 @@ import java.util.ArrayList;
 
 public class SortHelper implements Runnable {
 
+    int start;
+    int workload ;
 
-    File file ;
 
-    public SortHelper(File file) {
-        this.file = file;
+    public SortHelper(int start, int workload) {
+        this.workload = workload;
+        this.start = start;
     }
 
 
     @Override
     public void run() {
-        BufferedReader br = null;
 
-        ArrayList<String> lines = new ArrayList<>();
+        while(workload > 0){
+            BufferedReader br = null;
 
-        try {
-            br   = new BufferedReader(new FileReader(file));
+            ArrayList<String> lines = new ArrayList<>();
 
-            String contentLine = br.readLine();
-            while (contentLine != null) {
-                lines.add(contentLine);
-                contentLine = br.readLine();
+            File file = new File(String.valueOf(start));
+
+            try {
+                br = new BufferedReader(new FileReader(file));
+
+                String contentLine = br.readLine();
+                while (contentLine != null) {
+                    lines.add(contentLine);
+                    contentLine = br.readLine();
+                }
+
+                br.close();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            br.close();
+            //sort lines of a given file
+            quickSort(lines, 0, lines.size() - 1);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
 
-        //sort lines of a given file
-        quickSort(lines,0,lines.size()-1);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
+                for (int i = 0; i < lines.size(); i++) {
+                    String x = lines.get(i);
+                    writer.write(x);
+                    writer.write("\n");
+                }
 
-        try {
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file,false));
-            for (int i = 0; i < lines.size(); i++) {
-                String x = lines.get(i);
-                writer.write(x);
-                writer.write("\n");
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            workload --;
+            start ++;
+    }
 
 
     }

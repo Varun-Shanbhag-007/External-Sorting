@@ -17,11 +17,12 @@ public class Driver {
 
         File file = new File(fName);
 
-        int chunk = 10; //8Gb or 4gb
+         //8Gb or 4gb
         long maxRam = 8000000000L;
 
         if(file.length() > maxRam){
             long start = System.currentTimeMillis();
+            int chunk = (int) file.length()/1000000000;
             externalSort(file,chunk);
             long end = System.currentTimeMillis();
             System.out.println("Sorted " + fName + " in :" + (end-start));
@@ -43,7 +44,7 @@ public class Driver {
 
         long start = System.currentTimeMillis();
 
-        divideFileToChunks(file, chunk);
+        divideFileToChunks(file);
 
         filePointers = new BufferedReader[chunk];
 
@@ -56,7 +57,8 @@ public class Driver {
         start = System.currentTimeMillis();
 
         //Sort Temp Files
-        sortTempFilesMT(chunk);
+        int workLoadPerThread = chunk/8;
+        sortTempFilesMT(chunk,workLoadPerThread);
 
         finish = System.currentTimeMillis();
 
@@ -120,7 +122,7 @@ public class Driver {
         }
     }
 
-    public static void divideFileToChunks(File file, long chunk) {
+    public static void divideFileToChunks(File file) {
         int numberOfFiles = 0;
 
         BufferedReader br = null;
@@ -162,19 +164,15 @@ public class Driver {
 
     }
 
-    public static void sortTempFilesMT(int noOfFiles) {
+    public static void sortTempFilesMT(int noOfFiles, int workLoadPerThread) {
 
-        noOfFiles = noOfFiles-1;
-
-        while (noOfFiles >= 0) {
-
-            File file = new File(String.valueOf(noOfFiles));
-
-            SortHelper r = new SortHelper(file);
+        int counter = 0;
+        for(int i = 0 ;i < 8 ; i++){
+            SortHelper r = new SortHelper(counter,workLoadPerThread);
             Thread t = new Thread(r);
             t.run();
+            counter += 2;
 
-            noOfFiles--;
         }
     }
 

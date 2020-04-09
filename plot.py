@@ -1,0 +1,72 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+import seaborn as sns
+
+
+
+def read_columns(filename):
+    with open(filename) as file:
+        for line in file:
+            if line[0] == '#':
+                return line.split()[1:]
+
+
+def get_line(filename, column):
+    with open(filename) as file:
+        for line in file:
+            # print(line.split())
+            if line[0] == '0':
+                # print(line.split()[1:])
+                yield line.split(maxsplit=column-1)
+
+
+if __name__ == "__main__":
+
+        filename = "data"
+        columns = read_columns(filename)
+
+        columns = columns[:]
+
+        df = pd.DataFrame.from_records(get_line(filename, len(columns)), columns=columns)
+
+        df = df.drop(columns=["Command", "iodelay", "Time", "UID", "%usr", "%guest", "%system",
+                              "majflt/s", "%wait", "CPU", "minflt/s", "RSS", "VSZ", "kB_ccwr/s"])
+        print(df["%MEM"])
+
+
+        df['%CPU'] = df['%CPU'].astype(str).astype(float)
+        df['%MEM'] = df['%MEM'].astype(str).astype(float)
+        df["kB_rd/s"] = df['kB_rd/s'].astype(str).astype(float)
+        df["kB_wr/s"] = df['kB_wr/s'].astype(str).astype(float)
+
+        df["%MEM"] = df["%MEM"]*1.87
+
+        t = range(0,183)
+        # data1 = np.exp(t)
+        data1 = df["%CPU"][:-1]
+        # data2 = np.sin(2 * np.pi * t)
+        data2 = df["%MEM"][:-1]
+        print(data2)
+        # data3 = np.cos(2 * np.pi * t)
+        data3 = df["kB_rd/s"]/1000000 + df["kB_wr/s"]/1000000
+        data3 = data3[:-1]
+        print(data3)
+
+        fig, ax1 = plt.subplots()
+        color = 'tab:red'
+        ax1.set_xlabel('time (s)')
+        ax1.set_ylabel('CPU (%)', color=color)
+        ax1.plot(t, data1, color=color)
+        ax1.tick_params(axis='y', labelcolor=color)
+        ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+        color = 'tab:blue'
+        ax2.set_ylabel('Memory', color=color)  # we already handled the x-label with ax1
+        ax2.plot(t, data2, color=color)
+
+        ax2.plot(t, data3, color='tab:orange')
+        ax2.tick_params(axis='y', labelcolor=color)
+
+        fig.tight_layout()  # otherwise the right y-label is slightly clipped
+        plt.show()

@@ -156,6 +156,7 @@ public class Driver {
                     for (Thread thread : threadPool) {
                         try {
                             thread.join();
+			    thread.stop();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

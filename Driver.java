@@ -17,11 +17,11 @@ public class Driver {
         String param2 = args[1];
 
         int noOfThreads = Integer.valueOf(param2);
-        long sizerPerChunk = 40000000L / noOfThreads;
+        long sizerPerChunk = 8000000000L / noOfThreads;
 
         System.out.println("sizerPerChunk" + sizerPerChunk);
 
-        chunk_file_size = sizerPerChunk;
+        chunk_file_size = sizerPerChunk/100;
 
         File file = new File(fName);
 
@@ -54,7 +54,7 @@ public class Driver {
     }
 
     public static void externalSort(File file,int chunks,int noOfThreadsperLoop){
-
+	System.out.println(chunks);
         //array for temp file pointers
         filePointers = new BufferedReader[chunks];
 
@@ -71,7 +71,7 @@ public class Driver {
         System.out.println("Temp Files are created & sorted in :"+timeElapsed);
 
         start = System.currentTimeMillis();
-
+        
         //Merge the sorted files
         mergeKSortedArrays(chunks,file.length()/100 , file.getName());
 
@@ -131,7 +131,7 @@ public class Driver {
 
 
         BufferedReader br = null;
-        int loops = (int)(file.length()/4000000000L);
+        int loops = (int)(file.length()/8000000000L);
         System.out.println("loops "+loops);
         int counter = 0;
         try {
@@ -214,7 +214,7 @@ public class Driver {
     }
 
     public static void mergeKSortedArrays(int noOfFiles, long size, String fname) {
-
+        System.out.println(noOfFiles);
         File f = new File("Sorted"+fname);
         FileWriter fw ;
         BufferedWriter writer ;

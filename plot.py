@@ -14,7 +14,6 @@ def read_columns(filename):
 def get_line(filename, column):
     with open(filename) as file:
         for line in file:
-<<<<<<< HEAD
             if line[0] != '#' or line[0] != " ":
                 if len(line.split()[1:]) != 0:
                         # print(line.split()[1:])
@@ -57,17 +56,10 @@ def plot(cpu, mem, io):
     plt.plot(time, io, label="I/O", )
     plt.legend()
     plt.show()
-=======
-         #   print(line[0])
-            if line[0] == '1':
-          #      print(line.split()[1:])
-                yield line.split(maxsplit=column-1)
->>>>>>> 87789888a037a76a3ab8083653c222a44289c0a0
 
 
 if __name__ == "__main__":
 
-<<<<<<< HEAD
     parser = argparse.ArgumentParser()
 
     parser.add_argument('file', type=str, help="give data file")
@@ -87,23 +79,10 @@ if __name__ == "__main__":
     # drop unwanted columns from data
     data = data.drop(columns=["Command", "iodelay", "Time", "UID", "%usr", "%guest", "%system",
                           "majflt/s", "%wait", "CPU", "minflt/s", "RSS", "VSZ", "kB_ccwr/s"])
-=======
-        filename = "64GB_data"
-        columns = read_columns(filename)
-        columns = columns[:] 
-    
-    
->>>>>>> 87789888a037a76a3ab8083653c222a44289c0a0
 
     data.drop(data[data['PID'] != str(args.process_id)].index, inplace=True)
 
-<<<<<<< HEAD
     # print(data)
-=======
-        df = df.drop(columns=["Command", "iodelay", "Time", "UID", "%usr", "%guest", "%system",
-                              "majflt/s", "%wait", "CPU", "minflt/s", "RSS", "VSZ", "kB_ccwr/s"])
-        #print(df)
->>>>>>> 87789888a037a76a3ab8083653c222a44289c0a0
 
     data['%CPU'] = data['%CPU'].astype(str).astype(float)
     data['%MEM'] = data['%MEM'].astype(str).astype(float)
@@ -113,7 +92,6 @@ if __name__ == "__main__":
     # convert memory usage to GB
     data["%MEM"] = data["%MEM"] * 1.87
 
-<<<<<<< HEAD
     cpu = data["%CPU"][:-1]
     mem = data["%MEM"][:-1]
     # convert IO speed from KB/sec to GB/sec
@@ -133,57 +111,3 @@ if __name__ == "__main__":
     plot(cpu, mem, io)
 
 
-=======
-        df["%MEM"] = df["%MEM"]*1.87
-        #print(df["%CPU"])
-
-        # data1 = np.exp(t)
-        data1 = df["%CPU"][:-1]
-        # data2 = np.sin(2 * np.pi * t)
-        data2 = df["%MEM"][:-1]
-        #print(data2)
-        # data3 = np.cos(2 * np.pi * t)
-        data3 = df["kB_rd/s"]/1000000 + df["kB_wr/s"]/1000000
-        data3 = data3[:-1]
-        #print(data3)
-
-        t = range(0,len(data3))
-        fig, ax1 = plt.subplots()
-
-        color = 'tab:red'
-        ax1.set_xlabel('time (s)')
-        ax1.set_ylabel('CPU (%)', color=color)
-        ax1.plot(t, data1, color=color, label="CPU")
-        ax1.tick_params(axis='y', labelcolor=color)
-        plt.xticks(np.arange(0, 950, 50))
-        ax1.legend(bbox_to_anchor=(0.062,1.006))
-
-        ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-
-        color = 'tab:blue'
-        ax2.set_ylabel('Memory (GB)', color=color)  # we already handled the x-label with ax1
-        ax2.plot(t, data2, color=color, label="MEM")
-        ax2.plot(t, data3, color='tab:orange', label="IO")
-        ax2.tick_params(axis='y', labelcolor=color)
-        
-        plt.title("64GB - CPU, MEMORY, I/O")
-        plt.yticks(np.arange(0, 10.5, 0.5))
-        plt.legend()
-
-
-        fig.tight_layout()  # otherwise the right y-label is slightly clipped
-        plt.show()
-
-
-
-        data3 = df["kB_rd/s"] / 1000 + df["kB_wr/s"] / 1000
-        data3 = data3[:-1]
-        plt.title("I/O utilization MB/sec")
-        plt.xlabel("Time (seconds)")
-        plt.ylabel("IO (MB/sec)")
-        plt.xticks(np.arange(0,len(data3),50))
-        plt.plot(t, data3, label="I/O",)
-        plt.legend()
-        plt.show()
-
->>>>>>> 87789888a037a76a3ab8083653c222a44289c0a0

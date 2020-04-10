@@ -14,20 +14,29 @@ public class Driver {
 
         //Data File name
         String fName = args[0];
+        String param2 = args[1];
+
+        int noOfThreads = Integer.valueOf(param2);
+        long sizerPerChunk = 40000000L / noOfThreads;
+
+        System.out.println("sizerPerChunk" + sizerPerChunk);
+
+        chunk_file_size = sizerPerChunk;
 
         File file = new File(fName);
 
-         //8Gb or 4gb
+
+        //8Gb or 4gb
         long maxRam = 8000000000L;
 
         if(file.length() > maxRam){
 
             long start = System.currentTimeMillis();
 
-            //each chunk of 500MB == 500000000L
-            int chunk = (int) (file.length()/500000000L);
+            //each chunks of 500MB == 500000000L
+            int chunks = (int)Math.ceil ((float)file.length()/sizerPerChunk);
 
-            externalSort(file,chunk);
+            externalSort(file,chunks,noOfThreads);
 
             long end = System.currentTimeMillis();
             System.out.println("Sorted " + fName + " in :" + (end-start));
@@ -44,16 +53,16 @@ public class Driver {
 
     }
 
-    public static void externalSort(File file,int chunk){
+    public static void externalSort(File file,int chunks,int noOfThreadsperLoop){
 
         //array for temp file pointers
-        filePointers = new BufferedReader[chunk];
+        filePointers = new BufferedReader[chunks];
 
-        chunk_file_size = file.length()/(chunk*100);
+        //chunk_file_size = file.length()/(chunks*100);
 
         long start = System.currentTimeMillis();
 
-        sortTempFilesMT(file,chunk);
+        sortTempFilesMT(file,noOfThreadsperLoop);
 
         long finish = System.currentTimeMillis();
 
@@ -64,7 +73,7 @@ public class Driver {
         start = System.currentTimeMillis();
 
         //Merge the sorted files
-        mergeKSortedArrays(chunk,file.length()/100 , file.getName());
+        mergeKSortedArrays(chunks,file.length()/100 , file.getName());
 
         finish = System.currentTimeMillis();
 
@@ -73,7 +82,7 @@ public class Driver {
         System.out.println("Temp Files merged in: "+timeElapsed);
 
         //Delete Temp Files
-        deleteTempFiles(chunk);
+        deleteTempFiles(chunks);
 
     }
 
@@ -118,54 +127,55 @@ public class Driver {
         }
     }
 
-    public static void sortTempFilesMT(File file , int totalFiles) {
+    public static void sortTempFilesMT(File file , int noOfThreadsperLoop) {
 
 
         BufferedReader br = null;
-        int loops = totalFiles/8;
+        int loops = (int)(file.length()/4000000000L);
+        System.out.println("loops "+loops);
         int counter = 0;
         try {
-                br   = new BufferedReader(new FileReader(file));
-                String contentLine = br.readLine();
+            br   = new BufferedReader(new FileReader(file));
+            String contentLine = br.readLine();
 
-                while (loops > 0 && contentLine != null) {
+            while (loops > 0 && contentLine != null) {
 
-                    ArrayList<Thread> threadPool = new ArrayList<>();
+                ArrayList<Thread> threadPool = new ArrayList<>();
 
 
-                    for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < noOfThreadsperLoop; i++) {
 
-                        long size =  chunk_file_size;
+                    long size =  chunk_file_size;
 
-                        ArrayList<String> lines = new ArrayList<>();
+                    ArrayList<String> lines = new ArrayList<>();
 
-                        while (size != 0) {
-                            lines.add(contentLine);
-                            contentLine = br.readLine();
-                            size--;
-
-                        }
-                        SortHelper r = new SortHelper(counter,lines);
-                        Thread t = new Thread(r);
-                        t.start();
-                        threadPool.add(t);
-                        counter++;
+                    while (size != 0) {
+                        lines.add(contentLine);
+                        contentLine = br.readLine();
+                        size--;
 
                     }
+                    SortHelper r = new SortHelper(counter,lines);
+                    Thread t = new Thread(r);
+                    t.start();
+                    threadPool.add(t);
+                    counter++;
 
-                    for (Thread thread : threadPool) {
-                        try {
-                            thread.join();
-			                thread.interrupt();
-                            Runtime r = Runtime.getRuntime();
-                            r.gc();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    loops--;
                 }
+
+                for (Thread thread : threadPool) {
+                    try {
+                        thread.join();
+                        thread.interrupt();
+                        Runtime r = Runtime.getRuntime();
+                        r.gc();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                loops--;
+            }
 
             br.close();
 
@@ -212,34 +222,34 @@ public class Driver {
             fw =new FileWriter(f);
             writer =  new BufferedWriter(fw);
 
-        PriorityQueue<Driver.HeapNode> minHeap =
-                new PriorityQueue<>(noOfFiles,
-                        (Driver.HeapNode a, Driver.HeapNode b) -> a.value.compareTo(b.value));
+            PriorityQueue<Driver.HeapNode> minHeap =
+                    new PriorityQueue<>(noOfFiles,
+                            (Driver.HeapNode a, Driver.HeapNode b) -> a.value.compareTo(b.value));
 
 
-        //add first elements in the array to this heap
-        for (int i = 0; i < noOfFiles; i++) {
-            minHeap.add(new Driver.HeapNode(i, 0, getLineFromFile(i, 0)));
-        }
+            //add first elements in the array to this heap
+            for (int i = 0; i < noOfFiles; i++) {
+                minHeap.add(new Driver.HeapNode(i, 0, getLineFromFile(i, 0)));
+            }
 
-        //Complexity O(n * k * log k)
-        for (int i = 0; i < size; i++) {
-            //Take the minimum value and put into result
-            Driver.HeapNode node = minHeap.poll();
+            //Complexity O(n * k * log k)
+            for (int i = 0; i < size; i++) {
+                //Take the minimum value and put into result
+                Driver.HeapNode node = minHeap.poll();
 
-            if (node != null) {
-                writer.write(node.value);
-                //gensorts add \r\n to every line so adding same to merged sorted file to keep size same
-                writer.write("\r\n");
-                if (node.index + 1 < chunk_file_size ) {
-                    //Complexity of O(log k)
-                    String val = getLineFromFile(node.fileNum,node.index + 1);
-                    minHeap.add(new Driver.HeapNode(node.fileNum,
-                            node.index + 1,
-                            val));
+                if (node != null) {
+                    writer.write(node.value);
+                    //gensorts add \r\n to every line so adding same to merged sorted file to keep size same
+                    writer.write("\r\n");
+                    if (node.index + 1 < chunk_file_size ) {
+                        //Complexity of O(log k)
+                        String val = getLineFromFile(node.fileNum,node.index + 1);
+                        minHeap.add(new Driver.HeapNode(node.fileNum,
+                                node.index + 1,
+                                val));
+                    }
                 }
             }
-        }
 
             writer.close();
             fw.close();

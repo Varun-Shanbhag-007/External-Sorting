@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class Driver {
+public class MySort {
 
     static BufferedReader[] filePointers ;
     static ArrayList<ArrayList<String>> allList = new ArrayList<>();
@@ -27,7 +27,7 @@ public class Driver {
 
             long sizerPerChunk = maxRam/noOfThreads;
 
-            System.out.println("sizerPerChunk" + sizerPerChunk);
+            System.out.println("\nSize of Temp file: " + sizerPerChunk);
 
             chunk_file_size = sizerPerChunk/100;
 
@@ -39,36 +39,35 @@ public class Driver {
             externalSort(file,chunks,noOfThreads);
 
             long end = System.currentTimeMillis();
-            System.out.println("Sorted " + fName + " in :" + (end-start));
-            System.out.println("*** Units are in Millis");
+            System.out.println("Sorted " + fName + " in :" + (end-start)/1000);
+            System.out.println("*** Units are in Seconds");
 
         }
         else{
             long sizerPerChunk = file.length()/noOfThreads;
 
-            System.out.println("sizerPerChunk" + sizerPerChunk);
+            System.out.println("\nSize of Temp file: " + sizerPerChunk);
 
             chunk_file_size = sizerPerChunk/100;
 
             long start = System.currentTimeMillis();
 
             if(noOfThreads > 1){
-                System.out.println("Multi Threads");
+                System.out.println("Using "+noOfThreads+" threads");
                 inMemorySortMT(fName,noOfThreads);
             }
             else {
-                System.out.println("Single Threads");
+                System.out.println("Using Single Thread");
                 inMemorySort(fName);
             }
             long end = System.currentTimeMillis();
-            System.out.println("Sorted " + fName + " in :" + (end-start));
-            System.out.println("*** Units are in Millis");
+            System.out.println("Sorted " + fName + " in :" + (end-start)/1000);
+            System.out.println("*** Units are in Seconds");
         }
 
     }
 
     public static void externalSort(File file,int chunks,int noOfThreadsperLoop){
-        System.out.println(chunks);
         //array for temp file pointers
         filePointers = new BufferedReader[chunks];
 
@@ -82,7 +81,7 @@ public class Driver {
 
         long timeElapsed = finish - start;
 
-        System.out.println("Temp Files are created & sorted in :"+timeElapsed);
+        System.out.println("Temp Files are created & sorted in: "+timeElapsed);
 
         start = System.currentTimeMillis();
 
@@ -201,7 +200,7 @@ public class Driver {
 
         BufferedReader br = null;
         int loops = (int)(file.length()/maxRam);
-        System.out.println("loops "+loops);
+
         int counter = 0;
         try {
             br   = new BufferedReader(new FileReader(file));

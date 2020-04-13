@@ -64,6 +64,7 @@ if __name__ == "__main__":
 
     parser.add_argument('file', type=str, help="give data file")
     parser.add_argument('process_id', type=str, help="process id")
+    parser.add_argument('plot', type=str, help="whether to show plot or not")
 
     args = parser.parse_args()
 
@@ -89,6 +90,10 @@ if __name__ == "__main__":
     data["kB_rd/s"] = data['kB_rd/s'].astype(str).astype(float)
     data["kB_wr/s"] = data['kB_wr/s'].astype(str).astype(float)
 
+    # KB/sec
+    data_read = np.sum( data["kB_rd/s"])
+    data_write = np.sum( data["kB_wr/s"])
+
     # convert memory usage to GB
     data["%MEM"] = data["%MEM"] * 1.87
 
@@ -106,8 +111,11 @@ if __name__ == "__main__":
     print("CPU utilization: {:.2f}%".format(np.sum(CPU)/len(cpu)))
     MEM = np.array(mem)
     print("Memory utilization: {:.2f} GB".format(np.sum(MEM) / len(mem)))
+    print("Data Write: {:.2f} GB".format( data_write/1000000))
+    print("Data Read: {:.2f} GB".format( data_read/1000000))
     print("---------------------------------------------\n")
-
-    plot(cpu, mem, io)
+    
+    if args.plot == "show-plot":
+        plot(cpu, mem, io)
 
 

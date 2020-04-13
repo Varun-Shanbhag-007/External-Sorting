@@ -1,5 +1,5 @@
 
-Plotting from file: 1GB_linux_sort_data 
+Plotting from file: 1GB_linux_sort_data_8T 
 Process id: 32312
 Threads: 8
 --------------------------------------------
@@ -21,15 +21,16 @@ Memory utilization: 1.69 GB
 ---------------------------------------------
 
 
-Plotting from file: 1GB_linux_sort_data_32T 
-Process id: 37677
+Plotting from file: 1GB_linux_sort_32T 
+Process id: 36797
 Threads: 32
 --------------------------------------------
-Exact sort time: 6 seconds
-I/O utilization: 106.83 MB/sec
-CPU utilization: 100.00%
-Memory utilization: 2.11 GB
+Exact sort time: 10 seconds
+I/O utilization: 174.03 MB/sec
+CPU utilization: 84.00%
+Memory utilization: 1.67 GB
 ---------------------------------------------
+
 
 
 Plotting from file: 4GB_linux_sort_data_8T 

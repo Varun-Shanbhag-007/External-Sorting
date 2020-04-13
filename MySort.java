@@ -23,11 +23,16 @@ public class MySort {
 
         File file = new File(fName);
 
-        if(file.length() > maxRam){
+        z: if(file.length() > maxRam){
+
+            if(noOfThreads <= 1 ){
+                System.out.println("Please use more than one thread. Number of threads should be in power of 2.");
+                break z;
+            }
 
             long sizerPerChunk = maxRam/noOfThreads;
 
-            System.out.println("\nSize of Temp file: " + sizerPerChunk);
+            System.out.println("\nSize of Temp file: " + sizerPerChunk + " bytes");
 
             chunk_file_size = sizerPerChunk/100;
 
@@ -46,7 +51,7 @@ public class MySort {
         else{
             long sizerPerChunk = file.length()/noOfThreads;
 
-            System.out.println("\nSize of Temp file: " + sizerPerChunk);
+            System.out.println("\nSize of Temp file: " + sizerPerChunk+" bytes");
 
             chunk_file_size = sizerPerChunk/100;
 
@@ -296,20 +301,20 @@ public class MySort {
             fw =new FileWriter(f);
             writer =  new BufferedWriter(fw);
 
-            PriorityQueue<Driver.HeapNode> minHeap =
+            PriorityQueue<MySort.HeapNode> minHeap =
                     new PriorityQueue<>(noOfFiles,
-                            (Driver.HeapNode a, Driver.HeapNode b) -> a.value.compareTo(b.value));
+                            (MySort.HeapNode a, MySort.HeapNode b) -> a.value.compareTo(b.value));
 
 
             //add first elements in the array to this heap
             for (int i = 0; i < noOfFiles; i++) {
-                minHeap.add(new Driver.HeapNode(i, 0, getLineFromFile(i, 0)));
+                minHeap.add(new MySort.HeapNode(i, 0, getLineFromFile(i, 0)));
             }
 
             //Complexity O(n * k * log k)
             for (int i = 0; i < size; i++) {
                 //Take the minimum value and put into result
-                Driver.HeapNode node = minHeap.poll();
+                MySort.HeapNode node = minHeap.poll();
 
                 if (node != null) {
                     writer.write(node.value);
@@ -318,7 +323,7 @@ public class MySort {
                     if (node.index + 1 < chunk_file_size ) {
                         //Complexity of O(log k)
                         String val = getLineFromFile(node.fileNum,node.index + 1);
-                        minHeap.add(new Driver.HeapNode(node.fileNum,
+                        minHeap.add(new MySort.HeapNode(node.fileNum,
                                 node.index + 1,
                                 val));
                     }
@@ -342,20 +347,20 @@ public class MySort {
             fw =new FileWriter(f);
             writer =  new BufferedWriter(fw);
 
-            PriorityQueue<Driver.HeapNode> minHeap =
+            PriorityQueue<MySort.HeapNode> minHeap =
                     new PriorityQueue<>(noOfFiles,
-                            (Driver.HeapNode a, Driver.HeapNode b) -> a.value.compareTo(b.value));
+                            (MySort.HeapNode a, MySort.HeapNode b) -> a.value.compareTo(b.value));
 
 
             //add first elements in the array to this heap
             for (int i = 0; i < noOfFiles; i++) {
-                minHeap.add(new Driver.HeapNode(i, 0, getLineFromArrayList(i, 0)));
+                minHeap.add(new MySort.HeapNode(i, 0, getLineFromArrayList(i, 0)));
             }
 
             //Complexity O(n * k * log k)
             for (int i = 0; i < size; i++) {
                 //Take the minimum value and put into result
-                Driver.HeapNode node = minHeap.poll();
+                MySort.HeapNode node = minHeap.poll();
 
                 if (node != null) {
                     writer.write(node.value);
@@ -364,7 +369,7 @@ public class MySort {
                     if (node.index + 1 < chunk_file_size ) {
                         //Complexity of O(log k)
                         String val = getLineFromArrayList(node.fileNum,node.index + 1);
-                        minHeap.add(new Driver.HeapNode(node.fileNum,
+                        minHeap.add(new MySort.HeapNode(node.fileNum,
                                 node.index + 1,
                                 val));
                     }

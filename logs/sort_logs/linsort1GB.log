@@ -1,10 +1,12 @@
-Plotting from file: 1GB_linux_sort_data_32T
+Plotting from file: 1GB_linux_sort_8T 
+Process id: 36797
+
 --------------------------------------------
-Exact sort time: 6 seconds
-I/O utilization: 106.83 MB/sec
-CPU utilization: 100.00%
-Memory utilization: 2.11 GB
-Data Read: 0
-Data Write: 0.83
+Exact sort time: 10 seconds
+I/O utilization: 174.03 MB/sec
+CPU utilization: 84.00%
+Memory utilization: 1.67 GB
+Data Write: 0.95 GB
+Data Read: 0.98 GB
 ---------------------------------------------
 

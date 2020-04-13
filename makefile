@@ -1,9 +1,9 @@
 JC = javac
 
-Driver: Driver.class 
+MySort: MySort.class
 
-Driver.class: Driver.java 
-	$(JC) Driver.java SortHelper.java InMemorySortHelper.java
+MySort.class: MySort.java
+	$(JC) MySort.java SortHelper.java InMemorySortHelper.java
 
 clean:
 	rm *.class

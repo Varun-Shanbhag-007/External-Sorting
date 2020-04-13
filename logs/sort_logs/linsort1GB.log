@@ -1,0 +1,10 @@
+Plotting from file: 1GB_linux_sort_data_32T
+--------------------------------------------
+Exact sort time: 6 seconds
+I/O utilization: 106.83 MB/sec
+CPU utilization: 100.00%
+Memory utilization: 2.11 GB
+Data Read: 0
+Data Write: 0.83
+---------------------------------------------
+

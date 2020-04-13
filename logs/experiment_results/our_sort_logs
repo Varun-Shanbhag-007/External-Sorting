@@ -1,0 +1,101 @@
+
+Plotting from file: 1GB_our_sort_data_8T 
+Process id: 39890
+Threads: 8
+--------------------------------------------
+Exact sort time: 14 seconds
+I/O utilization: 141.59 MB/sec
+CPU utilization: 96.50%
+Memory utilization: 1.84 GB
+---------------------------------------------
+
+
+Plotting from file: 1GB_our_sort_data_32T 
+Process id: 39304
+Threads: 32
+--------------------------------------------
+Exact sort time: 17 seconds
+I/O utilization: 104.49 MB/sec
+CPU utilization: 100.00%
+Memory utilization: 1.81 GB
+---------------------------------------------
+
+
+Plotting from file: 4GB_our_sort_data_8T 
+Process id: 41948
+Threads: 8
+--------------------------------------------
+Exact sort time: 54 seconds
+I/O utilization: 141.96 MB/sec
+CPU utilization: 99.06%
+Memory utilization: 6.47 GB
+---------------------------------------------
+
+
+Plotting from file: 4GB_our_sort_data_16T 
+Process id: 42385
+Threads: 16
+--------------------------------------------
+Exact sort time: 60 seconds
+I/O utilization: 130.70 MB/sec
+CPU utilization: 98.42%
+Memory utilization: 6.48 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_our_sort_data_8T 
+Process id: 1417
+Threads: 8
+--------------------------------------------
+Exact sort time: 217 seconds
+I/O utilization: 215.42 MB/sec
+CPU utilization: 99.32%
+Memory utilization: 5.94 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_our_sort_data_16T 
+Process id: 2170
+Threads: 16
+--------------------------------------------
+Exact sort time: 194 seconds
+I/O utilization: 240.64 MB/sec
+CPU utilization: 98.83%
+Memory utilization: 3.87 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_our_sort_data_32T 
+Process id: 2933
+Threads: 32
+--------------------------------------------
+Exact sort time: 192 seconds
+I/O utilization: 243.47 MB/sec
+CPU utilization: 98.20%
+Memory utilization: 2.16 GB
+---------------------------------------------
+
+
+Plotting from file: 64GB_our_sort_data_16T 
+Process id: 25898
+Threads: 16
+--------------------------------------------
+Exact sort time: 829 seconds
+I/O utilization: 225.45 MB/sec
+CPU utilization: 99.26%
+Memory utilization: 3.43 GB
+---------------------------------------------
+
+
+Plotting from file: log_data/our_logs/64GB_our_sort_data_32T 
+Process id: 23679
+
+--------------------------------------------
+Exact sort time: 818 seconds
+I/O utilization: 228.47 MB/sec
+CPU utilization: 99.41%
+Memory utilization: 2.32 GB
+Data Write: 124.36 GB
+Data Read: 62.52 GB
+---------------------------------------------
+

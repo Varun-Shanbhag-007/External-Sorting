@@ -40,9 +40,10 @@ def plot(cpu, mem, io):
     ax2.plot(time, mem, color=color, label="MEM")
     ax2.plot(time, io, color='tab:orange', label="I/O")
     ax2.tick_params(axis='y', labelcolor=color)
+    ax2.legend(bbox_to_anchor=(0.062, 0.96))
 
     plt.title("64GB - CPU, MEMORY, I/O")
-    plt.legend()
+    # plt.legend()
 
     fig.tight_layout()
     plt.show()

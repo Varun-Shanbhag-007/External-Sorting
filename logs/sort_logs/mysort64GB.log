@@ -1,0 +1,13 @@
+Plotting from file: log_data/our_logs/64GB_our_sort_data_32T
+Process id: 23679
+Threads: 32
+--------------------------------------------
+Exact sort time: 818 seconds
+I/O utilization: 228.47 MB/sec
+CPU utilization: 99.41%
+Memory utilization: 2.32 GB
+Data Write: 124.36 GB
+Data Read: 62.52 GB
+---------------------------------------------
+
+

@@ -1,0 +1,144 @@
+
+Plotting from file: 1GB_linux_sort_data 
+Process id: 32312
+Threads: 8
+--------------------------------------------
+Exact sort time: 10 seconds
+I/O utilization: 169.67 MB/sec
+CPU utilization: 87.80%
+Memory utilization: 1.42 GB
+---------------------------------------------
+
+
+Plotting from file: 1GB_linux_sort_data_16T 
+Process id: 37117
+Threads: 16
+--------------------------------------------
+Exact sort time: 7 seconds
+I/O utilization: 98.83 MB/sec
+CPU utilization: 89.14%
+Memory utilization: 1.69 GB
+---------------------------------------------
+
+
+Plotting from file: 1GB_linux_sort_data_32T 
+Process id: 37677
+Threads: 32
+--------------------------------------------
+Exact sort time: 6 seconds
+I/O utilization: 106.83 MB/sec
+CPU utilization: 100.00%
+Memory utilization: 2.11 GB
+---------------------------------------------
+
+
+Plotting from file: 4GB_linux_sort_data_8T 
+Process id: 39636
+Threads: 8
+--------------------------------------------
+Exact sort time: 52 seconds
+I/O utilization: 186.86 MB/sec
+CPU utilization: 93.35%
+Memory utilization: 5.41 GB
+---------------------------------------------
+
+
+Plotting from file: 4GB_linux_sort_data_16T 
+Process id: 41028
+Threads: 16
+--------------------------------------------
+Exact sort time: 51 seconds
+I/O utilization: 212.11 MB/sec
+CPU utilization: 86.56%
+Memory utilization: 5.49 GB
+---------------------------------------------
+
+
+Plotting from file: 4GB_linux_sort_data_32T 
+Process id: 41441
+Threads: 32
+--------------------------------------------
+Exact sort time: 54 seconds
+I/O utilization: 217.02 MB/sec
+CPU utilization: 85.59%
+Memory utilization: 5.38 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_linux_sort_data_8T 
+Process id: 43127
+5
+
+--------------------------------------------
+Exact sort time: 255 seconds
+I/O utilization: 183.75 MB/sec
+CPU utilization: 81.29%
+Memory utilization: 7.35 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_linux_sort_data_16T 
+Process id: 47998
+Threads: 16
+--------------------------------------------
+Exact sort time: 96 seconds
+I/O utilization: 188.44 MB/sec
+CPU utilization: 80.04%
+Memory utilization: 6.99 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_linux_sort_data_32T 
+Process id: 48433
+Threads: 32
+--------------------------------------------
+Exact sort time: 234 seconds
+I/O utilization: 188.69 MB/sec
+CPU utilization: 82.75%
+Memory utilization: 7.36 GB
+---------------------------------------------
+
+
+Plotting from file: 16GB_linux_sort_data_16T 
+Process id: 427
+Threads: 16
+--------------------------------------------
+Exact sort time: 219 seconds
+I/O utilization: 214.03 MB/sec
+CPU utilization: 86.50%
+Memory utilization: 7.44 GB
+---------------------------------------------
+
+
+Plotting from file: 64GB_linux_sort_data_64T 
+Process id: 4499
+Threads: 64
+--------------------------------------------
+Exact sort time: 1106 seconds
+I/O utilization: 207.01 MB/sec
+CPU utilization: 89.94%
+Memory utilization: 7.76 GB
+---------------------------------------------
+
+
+Plotting from file: 64GB_linux_sort_data_32T 
+Process id: 8191
+Threads: 32
+--------------------------------------------
+Exact sort time: 1084 seconds
+I/O utilization: 215.35 MB/sec
+CPU utilization: 89.36%
+Memory utilization: 7.82 GB
+---------------------------------------------
+
+
+Plotting from file: 64GB_linux_sort_data_8T 
+Process id: 34059
+Threads: 8
+--------------------------------------------
+Exact sort time: 1235 seconds
+I/O utilization: 199.47 MB/sec
+CPU utilization: 87.04%
+Memory utilization: 7.83 GB
+---------------------------------------------
+

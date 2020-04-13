@@ -1,0 +1,12 @@
+Plotting from file: 4GB_linux_sort_data_16T
+Process id: 41028
+Threads: 16
+--------------------------------------------
+Exact sort time: 51 seconds
+I/O utilization: 212.11 MB/sec
+CPU utilization: 86.56%
+Memory utilization: 5.49 GB
+Data Read: 3.9
+Data Write: 7.52
+---------------------------------------------
+

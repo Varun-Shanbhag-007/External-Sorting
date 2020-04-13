@@ -1,0 +1,12 @@
+Plotting from file: 1GB_our_sort_data_8T
+Process id: 39890
+Threads: 8
+--------------------------------------------
+Exact sort time: 14 seconds
+I/O utilization: 141.59 MB/sec
+CPU utilization: 96.50%
+Memory utilization: 1.84 GB
+Data Read: 1.01
+Data Write: 0.98
+--------------------------------------------- 
+

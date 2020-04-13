@@ -1,0 +1,12 @@
+Plotting from file: 16GB_our_sort_data_32T
+Process id: 2933
+Threads: 32
+--------------------------------------------
+Exact sort time: 192 seconds
+I/O utilization: 243.47 MB/sec
+CPU utilization: 98.20%
+Memory utilization: 2.16 GB
+Data Read: 15.65
+Data Write: 31.09
+---------------------------------------------
+

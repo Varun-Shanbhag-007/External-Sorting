@@ -1,0 +1,13 @@
+Plotting from file: 16GB_linux_sort_data_16T
+Process id: 47998
+Threads: 16
+--------------------------------------------
+Exact sort time: 96 seconds
+I/O utilization: 188.44 MB/sec
+CPU utilization: 80.04%
+Memory utilization: 6.99 GB
+Data Read: 15.62
+Data Write: 31.25
+---------------------------------------------
+
+

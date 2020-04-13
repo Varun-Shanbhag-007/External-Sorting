@@ -1,0 +1,12 @@
+Plotting from file: 64GB_linux_sort_data_32T
+Process id: 8191
+Threads: 32
+--------------------------------------------
+Exact sort time: 1084 seconds
+I/O utilization: 215.35 MB/sec
+CPU utilization: 89.36%
+Memory utilization: 7.82 GB
+Data Read: 62.49
+Data Write: 170.95
+---------------------------------------------
+
